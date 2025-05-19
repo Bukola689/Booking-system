@@ -23,9 +23,8 @@ class RegisterController extends Controller
 {
       public function register(Request $request)
     {
-        dd($request->all());
 
-        $users = User::first();
+        //$users = User::first();
 
         $user = $request->validate([
             'name' => 'required',
@@ -40,15 +39,13 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        dd($user);
+        //$when = Carbon::now()->addSeconds(10);
 
-        $when = Carbon::now()->addSeconds(10);
+       // $user->notify((new RegisterNotification($user))->delay($when));
 
-        $user->notify((new RegisterNotification($user))->delay($when));
+        // event(new UserRegistered($user));
 
-         event(new UserRegistered($user));
-
-         event(new Registered($user));
+         //event(new Registered($user));
 
         $token  = $user->createToken('myapptoken')->plainTextToken;
 
