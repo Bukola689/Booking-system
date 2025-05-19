@@ -24,7 +24,7 @@ class RegisterController extends Controller
       public function register(Request $request)
     {
 
-        //$users = User::first();
+        $users = User::first();
 
         $user = $request->validate([
             'name' => 'required',
@@ -39,9 +39,9 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        //$when = Carbon::now()->addSeconds(10);
+        $when = Carbon::now()->addSeconds(10);
 
-       // $user->notify((new RegisterNotification($user))->delay($when));
+        $user->notify((new RegisterNotification($user))->delay($when));
 
         // event(new UserRegistered($user));
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 
@@ -28,9 +29,9 @@ class LoginController extends Controller
       } else {
         $token  = $user->createToken('myapptoken')->plainTextToken;
 
-        $when = Carbon::now()->addSeconds(10);
+       // $when = Carbon::now()->addSeconds(10);
 
-        $user->notify((new RegisterNotification($user))->delay($when));
+       // $user->notify((new RegisterNotification($user))->delay($when));
 
         event(new Registered($user));
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\V1\Api\LoginController;
+use App\Http\Controllers\V1\Api\Auth\UpdateProfileController;
 use App\Http\Controllers\V1\Api\RegisterController;
 use App\Http\Controllers\V1\Api\Auth\LogoutController;
 use Illuminate\Support\Facades\Route;
@@ -32,4 +33,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
             Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']); 
 
           });
+     });
+
+          
+         Route::group(['middleware' => 'me', 'middleware' => 'auth:sanctum'], function() {
+         Route::post('/profiles', [UpdateProfileController::class, 'updateProfile']);
+         Route::post('/change-password', [UpdateProfileController::class, 'changePassword']);
      });
