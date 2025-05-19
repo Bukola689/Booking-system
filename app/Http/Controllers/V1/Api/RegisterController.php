@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Http\Controllers\V1\Api;
+
+use App\Http\Controllers\Controller;
+use App\Notifications\RegisterNotification;
+use Carbon\Carbon;
+use Illuminate\Auth\Events\Registered;
+use App\Events\UserRegistered;
+use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+
+class RegisterController extends Controller
+{
+      public function register(Request $request)
+    {
+        dd($request->all());
+
+        $users = User::first();
+
+        $user = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required' 
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'active' => true,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        dd($user);
+
+        $when = Carbon::now()->addSeconds(10);
+
+        $user->notify((new RegisterNotification($user))->delay($when));
+
+         event(new UserRegistered($user));
+
+         event(new Registered($user));
+
+        $token  = $user->createToken('myapptoken')->plainTextToken;
+
+        $response = [
+            'user'=>$user,
+            'token'=>$token,
+        ];
+
+        return response($response, 201);
+    }
+}
