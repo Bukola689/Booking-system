@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Events\Models\Auth\UserLogin;
 use App\Notifications\Auth\LoginNotification;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
@@ -34,7 +35,7 @@ class LoginController extends Controller
 
         $user->notify((new LoginNotification($user))->delay($when));
 
-       // event(new UserLogin($user));
+        event(new UserLogin($user));
 
         event(new Registered($user));
 
