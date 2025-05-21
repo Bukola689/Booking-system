@@ -6,19 +6,20 @@ use App\Events\UserRegister;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use App\Mail\WelcomeMail;
 use Illuminate\Queue\InteractsWithQueue;
 
 class RegisterNotification
 {
-    private $user;
+    
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct()
     {
-        $this->user = $user;
+        //
     }
 
     /**
@@ -29,6 +30,6 @@ class RegisterNotification
      */
     public function handle(UserRegister $event)
     {
-         Mail::to($event->user)->send(new RegisteredMail($event->user));
+         Mail::to($event->user)->send(new WelcomeMail($event->user));
     }
 }

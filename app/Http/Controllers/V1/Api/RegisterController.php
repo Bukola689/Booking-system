@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\RegisterNotification;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
-use App\Events\UserRegistered;
+use App\Events\UserRegister;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Hash;
@@ -43,7 +43,7 @@ class RegisterController extends Controller
 
         $user->notify((new RegisterNotification($user))->delay($when));
 
-        // event(new UserRegistered($user));
+         event(new UserRegister($user));
 
          //event(new Registered($user));
 
