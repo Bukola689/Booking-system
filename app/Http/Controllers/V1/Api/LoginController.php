@@ -29,9 +29,11 @@ class LoginController extends Controller
       } else {
         $token  = $user->createToken('myapptoken')->plainTextToken;
 
-       // $when = Carbon::now()->addSeconds(10);
+        $when = Carbon::now()->addSeconds(10);
 
-       // $user->notify((new RegisterNotification($user))->delay($when));
+       // $user->notify((new LoginNotification($user))->delay($when));
+
+       // event(new UserLogin($user));
 
         event(new Registered($user));
 
