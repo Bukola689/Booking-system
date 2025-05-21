@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\V1\Api\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Events\Profile\ProfileCreated;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Events\Models\Auth\UserLogin;
-use App\Notifications\Auth\RegisterNotification;
-use App\Events\Models\Auth\updateProfile;
+use App\Events\Models\Auth\ChangePassword;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Notifications\PasswordNotification;
-use App\Notifications\Auth\updateProfileNotification;
+use App\Notifications\Auth\ChangePasswordNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Password;
@@ -22,7 +20,7 @@ class UpdateProfileController extends Controller
       public function updateProfile(Request $request)
     {
 
-        $user = User::first();
+        $profile = User::first();
 
         $profile = $request->user();
 
@@ -44,9 +42,9 @@ class UpdateProfileController extends Controller
 
          $when = Carbon::now()->addSeconds(10);
 
-         $user->notify((new updateProfileNotification($user))->delay($when));
+         $user->notify((new UpdateProfileNotification($user))->delay($when));
 
-         event(new updateProfile($profile));
+         event(new UpdateProfile($profile));
 
          Cache::put('user', $profile);
 
@@ -78,13 +76,13 @@ class UpdateProfileController extends Controller
                     'password' => Hash::make($request->password)
                 ]);
 
-              // $user->verify(new PasswordNotification($user));
+                $when = Carbon::now()->addSeconds(10);
 
-            //    $when = Carbon::now()->addSeconds(10);
+                $profile->notify((new ChangePasswordNotification($profile))->delay($when));
 
-            //    $user->notify((new updateProfileNotification($user))->delay($when));
+                event(new ChangePassword($profile));
 
-               Cache::put('user', $data);
+               Cache::put('user', $profile);
     
                return response()->json([
                   'message'=> 'Password Updated Successfully',

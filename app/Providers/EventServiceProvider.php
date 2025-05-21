@@ -6,6 +6,7 @@ use Illuminate\Auth\Events\Registered;
 use App\Subscribers\Auth\RegisterSubscriber;
 use App\Subscribers\Auth\UpdateProfileSubscriber;
 use App\Subscribers\Auth\LoginSubscriber;
+use App\Subscribers\Auth\ChangePasswordSubscriber;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
@@ -38,6 +39,7 @@ class EventServiceProvider extends ServiceProvider
         RegisterSubscriber::class,
         LoginSubscriber::class,
         UpdateProfileSubscriber::class,
+        ChangePasswordSubscriber::class,
     ];
 
       
