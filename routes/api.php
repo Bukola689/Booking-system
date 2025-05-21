@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\V1\Api\LoginController;
 use App\Http\Controllers\V1\Api\Auth\UpdateProfileController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\V1\Api\Auth\ResetPasswordController;
+use App\Http\Controllers\V1\Api\Auth\VerifyEmailController;
 use App\Http\Controllers\V1\Api\RegisterController;
 use App\Http\Controllers\V1\Api\Auth\LogoutController;
 use Illuminate\Support\Facades\Route;

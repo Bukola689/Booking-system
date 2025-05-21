@@ -5,13 +5,17 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use App\Models\PasswordReset;
+use App\Models\User;
 use Illuminate\Queue\SerializesModels;
 
-class ChangePasswordMail extends Mailable
+class PasswordResetMail extends Mailable
 {
-     use Queueable, SerializesModels;
+    use Queueable, SerializesModels;
 
-   
+    
+
+
     /**
      * Create a new message instance.
      *
@@ -19,7 +23,7 @@ class ChangePasswordMail extends Mailable
      */
     public function __construct()
     {
-        //
+       //
     }
 
     /**
@@ -29,6 +33,6 @@ class ChangePasswordMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.change-password');
+        return $this->markdown('emails.password.reset-password');
     }
 }
