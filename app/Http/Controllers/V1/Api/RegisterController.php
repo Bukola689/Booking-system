@@ -45,7 +45,7 @@ class RegisterController extends Controller
 
          event(new UserRegister($user));
 
-         //event(new Registered($user));
+         event(new Registered($user));
 
         $token  = $user->createToken('myapptoken')->plainTextToken;
 
