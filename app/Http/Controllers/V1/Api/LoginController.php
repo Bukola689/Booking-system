@@ -31,7 +31,7 @@ class LoginController extends Controller
 
         $when = Carbon::now()->addSeconds(10);
 
-       // $user->notify((new LoginNotification($user))->delay($when));
+        $user->notify((new LoginNotification($user))->delay($when));
 
        // event(new UserLogin($user));
 
