@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Auth;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\User;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class RegisterNotification extends Notification
+class RegisterNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -48,6 +49,12 @@ class RegisterNotification extends Notification
                     ->line('The introduction to the notification.')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
+    }
+
+     // Only add this if you specifically need callable functionality
+    public function __invoke($notifiable)
+    {
+        return $this->toMail($notifiable);
     }
 
     /**

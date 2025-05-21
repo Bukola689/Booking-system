@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\Models\Auth;
 
-use App\Events\UserRegister;
+use App\Events\Models\Auth\UserRegister;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
@@ -11,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 
 class RegisterNotification
 {
+    
     
     /**
      * Create the event listener.
@@ -31,5 +32,7 @@ class RegisterNotification
     public function handle(UserRegister $event)
     {
          Mail::to($event->user)->send(new WelcomeMail($event->user));
+
+        //$event->user->notify(new WelcomeNotification());
     }
 }

@@ -3,23 +3,23 @@
 namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Controllers\Controller;
-use App\Notifications\RegisterNotification;
+use App\Notifications\Auth\RegisterNotification;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
-use App\Events\UserRegister;
+use App\Events\Models\Auth\UserRegister;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class RegisterController extends Controller
+class RegisterController extends Controller implements ShouldQueue
 {
       public function register(Request $request)
     {
