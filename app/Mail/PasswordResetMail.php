@@ -13,7 +13,11 @@ class PasswordResetMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    
+     public $user;
+
+    public $reset;
+
+    public $url;
 
 
     /**
@@ -21,9 +25,13 @@ class PasswordResetMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user, PasswordReset $reset)
     {
-       //
+         $emailToken = $reset->token;
+
+        $user = $this->url = config('settings.frontend_url')."/reset-password?";
+        $this->user = $user;
+        $this->reset = $reset;
     }
 
     /**

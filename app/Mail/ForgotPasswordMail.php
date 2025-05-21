@@ -14,25 +14,14 @@ class ForgotPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
-
-    public $reset;
-
-    public $url;
-
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, PasswordReset $reset)
+    public function __construct()
     {
-         $emailToken = $reset->token;
-
-        $user = $this->url = config('settings.frontend_url')."/reset-password?";
-        $this->user = $user;
-        $this->reset = $reset;
+        //
     }
 
     /**
