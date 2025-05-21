@@ -5,21 +5,24 @@ namespace App\Http\Controllers\V1\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Events\Profile\ProfileCreated;
 use App\Models\User;
+use Carbon\Carbon;
+use App\Events\Models\Auth\UserLogin;
+use App\Notifications\Auth\RegisterNotification;
+use App\Events\Models\Auth\updateProfile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\UserResource;
 use App\Notifications\PasswordNotification;
-use App\Notifications\ProfileNotification;
+use App\Notifications\Auth\updateProfileNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Password;
 
-class updateProfileController extends Controller
+class UpdateProfileController extends Controller
 {
       public function updateProfile(Request $request)
     {
 
-        //$user = User::first();
+        $user = User::first();
 
         $profile = $request->user();
 
@@ -27,7 +30,6 @@ class updateProfileController extends Controller
             'name' => 'required',
         ]);
 
-       // dd($data);
   
         if($data->fails()) {
             return response()->json([
@@ -39,11 +41,14 @@ class updateProfileController extends Controller
         $profile->name = $request->input('name');
         $profile->update();
 
-       // $user->verify(new ProfileNotification($user));
 
-      //  event(new ProfileCreated($profile));
+         $when = Carbon::now()->addSeconds(10);
 
-        Cache::put('user', $data);
+         $user->notify((new updateProfileNotification($user))->delay($when));
+
+         event(new updateProfile($profile));
+
+         Cache::put('user', $profile);
 
        // return new UserResource($profile);
 
@@ -52,7 +57,7 @@ class updateProfileController extends Controller
 
     public function changePassword(Request $request)
     {
-        //$profile = User::first();
+        $profile = User::first();
 
         $validator = Validator::make($request->all(), [
             "old_password" => "required",
@@ -75,7 +80,11 @@ class updateProfileController extends Controller
 
               // $user->verify(new PasswordNotification($user));
 
-              // Cache::put('user', $data);
+            //    $when = Carbon::now()->addSeconds(10);
+
+            //    $user->notify((new updateProfileNotification($user))->delay($when));
+
+               Cache::put('user', $data);
     
                return response()->json([
                   'message'=> 'Password Updated Successfully',
