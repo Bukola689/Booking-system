@@ -5,6 +5,9 @@ namespace App\Http\Controllers\V1\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\PasswordReset;
 use App\Models\User;
+use App\Notifications\Auth\ResetPasswordNotification;
+use App\Events\Models\Auth\ResetPassword;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -12,7 +15,8 @@ class ResetPasswordController extends Controller
 {
       public function resetPassword(Request $request)
     {
-        //dd('ok');
+         $users = User::first();
+
         $request->validate([
             'token' => ['required', 'string'],
             'password' => ['required', 'string', 'confirmed'],
@@ -41,6 +45,12 @@ class ResetPasswordController extends Controller
         }
 
         $user->update(['password' => Hash::make($request->password)]);
+
+        $when = Carbon::now()->addSeconds(10);
+
+        $user->notify((new ResetPasswordNotification($user))->delay($when));
+
+        event(new ResetPassword($users));
 
         return "Password reset successfully";
     }

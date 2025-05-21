@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ForgotPasswordNotification extends Notification
+class ResetPasswordNotification extends Notification
 {
     use Queueable;
 
@@ -23,6 +23,13 @@ class ForgotPasswordNotification extends Notification
     {
         $this->user = $user;
     }
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+  
 
     /**
      * Get the notification's delivery channels.
@@ -45,16 +52,17 @@ class ForgotPasswordNotification extends Notification
     {
         return (new MailMessage)
                     ->line('The introduction to the notification.')
-                     ->line('Password Password Notification.')
+                    ->line('Reset Password Notification.')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }
 
-           // Only add this if you specifically need callable functionality
+          // Only add this if you specifically need callable functionality
     public function __invoke($notifiable)
     {
         return $this->toMail($notifiable);
     }
+
 
     /**
      * Get the array representation of the notification.

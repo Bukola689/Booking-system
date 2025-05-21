@@ -8,6 +8,7 @@ use App\Subscribers\Auth\UpdateProfileSubscriber;
 use App\Subscribers\Auth\LoginSubscriber;
 use App\Subscribers\Auth\ChangePasswordSubscriber;
 use App\Subscribers\Auth\ForgotPasswordSubscriber;
+use App\Subscribers\Auth\ResetPasswordSubscriber;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
@@ -42,6 +43,7 @@ class EventServiceProvider extends ServiceProvider
         UpdateProfileSubscriber::class,
         ChangePasswordSubscriber::class,
         ForgotPasswordSubscriber::class,
+        ResetPasswordSubscriber::class,
     ];
 
       
