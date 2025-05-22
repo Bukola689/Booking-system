@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use App\Models\PasswordReset;
 use App\Models\User;
+use Illuminate\Bus\Queueable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -36,7 +37,7 @@ class ResetPasswordMail extends Mailable
         // return $this->markdown('emails.password.change-password');
 
           return $this->subject('Password Reset Request')
-                    ->view('emails.password.change-password')
+                    ->view('emails.password.reset-password')
                     ->with(['resetLink' => $this->resetLink]);
     }
 }
