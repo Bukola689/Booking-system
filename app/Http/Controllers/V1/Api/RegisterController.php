@@ -29,12 +29,14 @@ class RegisterController extends Controller implements ShouldQueue
         $user = $request->validate([
             'name' => 'required',
             'email' => 'required',
+            'role' => 'required',
             'password' => 'required' 
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'active' => true,
+            'role' => $request->role,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\VerifyEmailController;
+use App\Http\Controllers\V1\Api\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 /*

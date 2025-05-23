@@ -26,4 +26,6 @@ class Booking extends Model
       {
         return $this->belongsTo(Service::class);
       }
+
+     
 }

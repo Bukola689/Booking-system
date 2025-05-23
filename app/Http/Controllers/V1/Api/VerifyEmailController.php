@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V1\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Verified;
 use App\Models\User;
 use Illuminate\Http\Request;
