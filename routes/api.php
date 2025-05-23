@@ -31,9 +31,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
        Route::group(['middleware' => 'admin', 'middleware' => 'auth:sanctum'], function() {
-         Route::post('/profiles', [UpdateProfileController::class, 'updateProfile']);
-         Route::post('/change-password', [UpdateProfileController::class, 'changePassword']);
-     });  
+       
+    
 
         Route::get('users', [UserController::class, 'index']);
         Route::post('users', [UserController::class, 'store']);
@@ -49,12 +48,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         Route::put('businesses/{business}', [BusinessController::class, 'update']);
         Route::delete('businesses/{business}', [BusinessController::class, 'destroy']);
 
-         Route::get('reviews', [BusinessController::class, 'index']);
-        Route::post('reviews', [BusinessController::class, 'store']);
-        Route::get('reviews/{review}', [BusinessController::class, 'show']);
-        Route::put('reviews/{review}', [BusinessController::class, 'update']);
-        Route::delete('reviews/{review}', [BusinessController::class, 'destroy']);
-         Route::get('business_reviews', [BusinessController::class, 'business_review']);
+          }); 
+
+       
 
 
 
@@ -73,6 +69,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
             Route::get('bookings/{booking}', [BookingController::class, 'show']);
             Route::put('bookings/{booking}', [BookingController::class, 'update']);
             Route::delete('bookings/{booking}', [BookingController::class, 'destroy']);
+
+            Route::get('reviews', [BusinessController::class, 'index']);
+            Route::post('reviews', [BusinessController::class, 'store']);
+            Route::get('reviews/{review}', [BusinessController::class, 'show']);
+            Route::put('reviews/{review}', [BusinessController::class, 'update']);
+            Route::delete('reviews/{review}', [BusinessController::class, 'destroy']);
+            Route::get('business_reviews', [BusinessController::class, 'business_review']);
 
           });
      });
