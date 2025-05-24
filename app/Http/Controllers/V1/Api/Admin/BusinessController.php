@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Api\Admin;
 
 use App\Models\Business;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -20,7 +21,13 @@ class BusinessController extends Controller
     public function index()
     {
 
-        $businesses = Business::paginate(5);
+        $businesses = Business::orderBy('id', 'asc')->paginate(5);
+        
+         // Check if the business exist
+
+        if($businesses->isEmpty()) {
+            throw new NotFoundHttpException('Business is Empty');
+        }
 
         return response()->json($businesses);
     }
@@ -45,7 +52,6 @@ class BusinessController extends Controller
     {
          $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:15|unique:businesses,name',
-            'open_hours' => 'required|string',
             'status' => 'required',    
         ]);
 
@@ -56,11 +62,14 @@ class BusinessController extends Controller
         $business = new Business;
         $business->user_id = Auth::id();
         $business->name = $request->name;
-        $business->open_hours = $request->open_hours;
+        $business->opening_hours = Carbon::now();
         $business->status = $request->status;
         $business->save();
 
-        return response()->json(['Business Saved Successsfully'], 201);
+         return response()->json([
+            'success' => 'Business Created Successfully',
+            'Business' => $business
+          ]);
     }
 
     /**
@@ -115,17 +124,6 @@ class BusinessController extends Controller
             $business->name = $request->name;
         }
 
-        if(! empty($request->opening_hours)) {
-            $validator = Validator::make($request->all(), [
-                'opening_hours' => 'required|string',
-            ]);
-
-            if($validator->fails()) {
-                return response()->json('Opening hourss is empty', 400);
-            };
-
-            $business->opening_hours = $request->opening_hours;
-        }
 
          if(! empty($request->status)) {
             $validator = Validator::make($request->all(), [
@@ -169,7 +167,7 @@ class BusinessController extends Controller
 
             return response()->json([
                 'id' => $business->id,
-                'message' => 'Store delete Successfully'
+                'message' => 'Business delete Successfully'
             ]);
         } catch (HttpException $th) {
             throw $th;
