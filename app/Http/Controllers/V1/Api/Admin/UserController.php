@@ -14,7 +14,7 @@ class UserController extends Controller
      public function index()
     {
 
-        $users = User::where('id', 'desc')->paginate(5);
+        $users = User::orderBy('id', 'desc')->paginate(5);
         
          if($users->isEmpty()) {
             throw new NotFoundHttpException('User is Empty');
@@ -99,12 +99,12 @@ class UserController extends Controller
         $user = User::find($id);
 
         if(! $user) {
-            throw new NotFoundHttpException('user not found');
+            return response()->json('user not found');
          }
 
          $user->delete();
 
-         return response()->json('user removed !');
+         return response()->json('User  Succesfully Removed !');
      }
 
      public function suspend($id)
