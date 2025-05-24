@@ -15,8 +15,9 @@ class UserController extends Controller
     {
 
         $users = User::where('id', 'desc')->paginate(5);
-        {
-            throw new NotFoundHttpException('User Not Found');
+        
+         if($users->isEmpty()) {
+            throw new NotFoundHttpException('User is Empty');
         }
 
         return response()->json($users);

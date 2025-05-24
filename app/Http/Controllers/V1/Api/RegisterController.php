@@ -24,6 +24,14 @@ class RegisterController extends Controller implements ShouldQueue
       public function register(Request $request)
     {
 
+        // Check if the user is already registered
+        if (User::where('email', $request->email)->exists()) {
+            throw ValidationException::withMessages([
+                'email' => ['The email has already been taken.'],
+            ]);
+        }
+        // Check if the user is already registered
+
         $users = User::first();
 
         $user = $request->validate([

@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Http\Controller\V1\Api\Admin\UserController;
-use App\Http\Controller\V1\Api\Admin\BusinessController;
+use App\Http\Controllers\V1\Api\Admin\UserController;
+use App\Http\Controllers\V1\Api\Admin\BusinessController;
 use App\Http\Controllers\V1\Api\LoginController;
 use App\Http\Controllers\V1\Api\BookingController;
 use App\Http\Controllers\V1\Api\ReviewController;
@@ -49,9 +49,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         Route::delete('businesses/{business}', [BusinessController::class, 'destroy']);
 
           }); 
-
-       
-
 
 
     //....auth....//
