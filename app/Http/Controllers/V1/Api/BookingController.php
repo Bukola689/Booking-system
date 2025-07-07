@@ -52,11 +52,14 @@ class BookingController extends Controller
 
         $booking = new Booking;
         $booking->user_id = Auth::id();
-        $booking->service_id = $service->id;
+        $booking->service_id = $request->service_id;
         $booking->time = Carbon::now();
         $booking->save();
 
-        return response()->json(['Service Saved Successsfully'], 201);
+        return response()->json([
+            'message' => 'Booking Saved Successsfully',
+             'booking' => $booking
+          ], 201);
     }
 
     /**

@@ -61,6 +61,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
             Route::post('/email/verification-notification', [VerifyEmailController::class, 'resendNotification'])->name('verification.send');
             Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']); 
 
+            Route::get('services', [ServiceController::class, 'index']);
+            Route::post('services', [ServiceController::class, 'store']);
+            Route::get('services/{service}', [ServiceController::class, 'show']);
+            Route::put('services/{service}', [ServiceController::class, 'update']);
+            Route::delete('services/{service}', [ServiceController::class, 'destroy']);
+
             Route::get('bookings', [BookingController::class, 'index']);
             Route::post('bookings', [BookingController::class, 'store']);
             Route::get('bookings/{booking}', [BookingController::class, 'show']);

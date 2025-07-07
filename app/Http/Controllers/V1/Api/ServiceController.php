@@ -20,7 +20,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $businesses = Business::where('used_id', Auth::id())->first();
+        $business = Business::where('user_id', Auth::id())->first();
         $services = Service::where('business_id', $business->id)->paginate(5);
 
         return response()->json($services);
@@ -46,7 +46,7 @@ class ServiceController extends Controller
     {
           $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:15|unique:services,name',
-            'decription' => 'required',
+            'description' => 'required',
             'price' => 'required',    
         ]);
 
@@ -100,9 +100,13 @@ class ServiceController extends Controller
      */
     public function update(Request $request, Service $service)
     {
+         if(!$service) {
+            throw new NotFoundHttpException('Service is Empty');
+        }
+
            $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:15|unique:services,name',
-            'decription' => 'required',
+            'description' => 'required',
             'price' => 'required',    
         ]);
 
@@ -110,6 +114,8 @@ class ServiceController extends Controller
             return response()->json('Validator Fails');
         }
 
+       // $business = Business::where('id', Auth::id())->first();
+        $service->business_id = $request->business_id;
         $service->name = $request->name;
         $service->description = $request->description;
         $service->price = $request->price;
@@ -117,7 +123,8 @@ class ServiceController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Service Updated Successfully'
+            'message' => 'Service Updated Successfully',
+            'service' => $service
         ]);
     }
 

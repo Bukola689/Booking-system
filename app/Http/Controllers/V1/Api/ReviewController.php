@@ -28,7 +28,7 @@ class ReviewController extends Controller
      /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return $id
      */
     public function business_review($id)
     {
@@ -138,7 +138,7 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-                if(! $review) {
+        if(! $review) {
            throw new NotFoundHttpException('Review does not exist');
         }
 
